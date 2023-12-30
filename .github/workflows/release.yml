@@ -3,10 +3,7 @@ name: Release
 on:
   push:
     paths:
-      - ".storybook/**"
-      - ".changeset/**"
       - "packages/**"
-      - "stories/**"
     branches:
       - main
 
