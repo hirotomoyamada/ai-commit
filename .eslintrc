@@ -25,7 +25,6 @@
       }
     ],
     "no-var": "error",
-    "no-console": ["warn", { "allow": ["warn", "error"] }],
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/consistent-type-imports": "error",
     "unused-imports/no-unused-imports": "error"
