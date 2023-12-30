@@ -1,0 +1,46 @@
+{
+  "name": "ai-commit",
+  "description": "",
+  "version": "0.1.0",
+  "keywords": [],
+  "author": "Hirotomo Yamada <hirotomo.yamada@avap.co.jp>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hirotomoyamada/ai-commit",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/hirotomoyamada/ai-commit/issues"
+  },
+  "bin": {
+    "ai-commit": "bin/index.js",
+    "aic": "bin/index.js"
+  },
+  "scripts": {
+    "build": "tsup src --format cjs --clean --shims",
+    "clean": "rimraf dist .turbo",
+    "typecheck": "tsc --noEmit",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "commander": "^11.1.0",
+    "openapi": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/update-notifier": "^6.0.8",
+    "update-notifier": "^7.0.0",
+    "clean-package": "2.2.0"
+  }
+}
