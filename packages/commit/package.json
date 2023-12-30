@@ -1,8 +1,16 @@
 {
-  "name": "ai-commit",
-  "description": "",
+  "name": "@hirotomoyamada/ai-commit",
+  "description": "AI generates git commit messages on your behalf.",
   "version": "0.1.0",
-  "keywords": [],
+  "keywords": [
+    "ai",
+    "git",
+    "openai",
+    "chat-gpt",
+    "cli",
+    "commit",
+    "ai-commit"
+  ],
   "author": "Hirotomo Yamada <hirotomo.yamada@avap.co.jp>",
   "license": "MIT",
   "main": "dist/index.js",
