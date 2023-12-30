@@ -8,6 +8,7 @@ export const run = async () => {
   program
     .option("-g, --generate [generate]", ``)
     .option("-a, --all", ``)
+    .option("-e, --excludes [files...]", ``)
     .action(commit)
 
   program
