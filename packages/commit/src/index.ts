@@ -6,7 +6,7 @@ import { hook } from "./commands/hook"
 
 export const run = async () => {
   program
-    .option("-g, --generate <generate>", ``)
+    .option("-g, --generate [generate]", ``)
     .option("-a, --all", ``)
     .action(commit)
 
