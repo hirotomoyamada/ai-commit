@@ -109,6 +109,28 @@ importers:
         specifier: ^7.0.0
         version: 7.0.0
 
+  packages/translate:
+    dependencies:
+      '@clack/prompts':
+        specifier: ^0.7.0
+        version: 0.7.0
+      commander:
+        specifier: ^11.1.0
+        version: 11.1.0
+      openapi:
+        specifier: ^1.0.1
+        version: 1.0.1
+    devDependencies:
+      '@types/update-notifier':
+        specifier: ^6.0.8
+        version: 6.0.8
+      clean-package:
+        specifier: 2.2.0
+        version: 2.2.0
+      update-notifier:
+        specifier: ^7.0.0
+        version: 7.0.0
+
 packages:
 
   /@aashutoshrathi/word-wrap@1.2.6:

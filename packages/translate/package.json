@@ -1,15 +1,14 @@
 {
-  "name": "@hirotomoyamada/ai-commit",
-  "description": "AI generates git commit messages on your behalf.",
+  "name": "@hirotomoyamada/ai-translate",
+  "description": "AI translates into the language of your choice.",
   "version": "0.1.0",
   "keywords": [
     "ai",
-    "git",
     "openai",
     "chat-gpt",
     "cli",
-    "commit",
-    "ai-commit"
+    "translate",
+    "ai-translate"
   ],
   "author": "Hirotomo Yamada <hirotomo.yamada@avap.co.jp>",
   "license": "MIT",
@@ -25,7 +24,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hirotomoyamada/ai-commit",
-    "directory": "packages/ai-commit"
+    "directory": "packages/ai-translate"
   },
   "bugs": {
     "url": "https://github.com/hirotomoyamada/ai-commit/issues"
