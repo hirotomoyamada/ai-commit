@@ -1,49 +1,24 @@
+import { existsSync } from "fs"
+import { readFile } from "fs/promises"
+import path from "path"
 import OpenAI, { APIError } from "openai"
 import type { ChatCompletionMessageParam } from "openai/resources"
-import type { CommitType, Config } from "./config"
+import { COMMIT_RULES, COMMIT_TYPES, DEFAULT_PROMPT } from "../commands/prompt"
+import { CONFIG_PATH, type CommitType, type Config } from "./config"
 
-const COMMIT_RULES: Record<CommitType, string> = {
-  conventional: "<type>(<optional scope>): <commit message>",
+const generatePrompt = (
+  prompt: string,
+  { locale = "en", type = "", maxLength = "50" }: Config,
+) => {
+  const replacements: Record<string, string> = {
+    locale,
+    maxLength,
+    commit_type: COMMIT_TYPES[type as CommitType],
+    commit_rule: COMMIT_RULES[type as CommitType] ?? "<commit message>",
+  }
+
+  return prompt.replace(/{{\s*(\w+)\s*}}/g, (_, key) => replacements[key] || "")
 }
-
-const COMMIT_TYPES: Record<CommitType, string> = {
-  conventional: [
-    `Choose a type from the type-to-description JSON below that best describes the git diff:`,
-    JSON.stringify(
-      {
-        docs: "Documentation only changes",
-        style:
-          "Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)",
-        refactor: "A code change that neither fixes a bug nor adds a feature",
-        perf: "A code change that improves performance",
-        test: "Adding missing tests or correcting existing tests",
-        build: "Changes that affect the build system or external dependencies",
-        ci: "Changes to our CI configuration files and scripts",
-        chore: "Other changes that don't modify src or test files",
-        revert: "Reverts a previous commit",
-        feat: "A new feature",
-        fix: "A bug fix",
-      },
-      null,
-      2,
-    ),
-  ].join("\n"),
-}
-
-const generatePrompt = ({ locale, type = "", maxLength }: Config) =>
-  [
-    "Generate a concise git commit message written in present tense for the following code diff with the given specifications below:",
-    `Message language: ${locale}`,
-    `Commit message must be a maximum of ${maxLength} characters.`,
-    "Exclude anything unnecessary such as translation. Your entire response will be passed directly into git commit.",
-    COMMIT_TYPES[type as CommitType],
-    "The output response must be in format:",
-    COMMIT_RULES[type as CommitType] ?? "<commit message>",
-    "The beginning of <commit message> must be in lowercase.",
-    "<commit message> must always be in the past tense.",
-  ]
-    .filter(Boolean)
-    .join("\n")
 
 export type GenerateCommitMessagesParameters = Config & {
   diff: string
@@ -60,10 +35,17 @@ export const generateCommitMessages = async ({
   diff,
 }: GenerateCommitMessagesParameters): Promise<string[]> => {
   try {
+    const isExists = existsSync(path.join(CONFIG_PATH, "prompt"))
+
+    let prompt: string = DEFAULT_PROMPT
+
+    if (isExists)
+      prompt = await readFile(path.join(CONFIG_PATH, "prompt"), "utf-8")
+
     const messages: ChatCompletionMessageParam[] = [
       {
         role: "system",
-        content: generatePrompt({ locale, type, maxLength }),
+        content: generatePrompt(prompt, { locale, type, maxLength }),
       },
       {
         role: "user",
