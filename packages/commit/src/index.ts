@@ -20,6 +20,7 @@ export const run = async () => {
     .command("config")
     .addCommand(program.command("get [keys...]", ``).action(config.get))
     .addCommand(program.command("set [parameters...]", ``).action(config.set))
+    .addCommand(program.command("reset", ``).action(config.reset))
 
   program.on("-h, --help", help)
 
