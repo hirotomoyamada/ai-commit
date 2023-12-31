@@ -1,19 +1,16 @@
 import { existsSync } from "fs"
-import { readFile, writeFile } from "fs/promises"
+import { mkdir, readFile, writeFile } from "fs/promises"
 import os from "os"
 import path from "path"
 import { pickObject } from "./object"
 
-export type CommitType = (typeof COMMIT_TYPES)[number]
-export type ConfigKey = (typeof CONFIG_KEYS)[number]
-
-export type Config = {
-  [key in (typeof CONFIG_KEYS)[number]]?: string
-}
+export type CommitType = (typeof COMMIT_TYPE_MAP)[number]
+export type ConfigKey = (typeof CONFIG_KEY_MAP)[number]
+export type Config = { [key in ConfigKey]?: string }
 
 export const CONFIG_PATH = path.join(os.homedir(), ".aicommit")
-export const COMMIT_TYPES = ["conventional"] as const
-export const CONFIG_KEYS = [
+export const COMMIT_TYPE_MAP = ["conventional"] as const
+export const CONFIG_KEY_MAP = [
   "apiKey",
   "generate",
   "locale",
@@ -21,6 +18,7 @@ export const CONFIG_KEYS = [
   "type",
   "model",
   "maxLength",
+  "prompt",
 ] as const
 export const DEFAULT_CONFIG: Config = {
   apiKey: undefined,
@@ -34,7 +32,7 @@ export const DEFAULT_CONFIG: Config = {
 
 export const onValidConfigKeys = (keys: string[]) => {
   keys.forEach((key) => {
-    if (!CONFIG_KEYS.includes(key as ConfigKey))
+    if (!CONFIG_KEY_MAP.includes(key as ConfigKey))
       throw new Error(`Invalid config property: ${key}`)
   })
 }
@@ -49,7 +47,7 @@ export const onValidateProperty = (
 
 export const onValidConfig = (obj: Record<string, any>) => {
   Object.entries(obj).forEach(([key, value]) => {
-    if (!CONFIG_KEYS.includes(key as ConfigKey))
+    if (!CONFIG_KEY_MAP.includes(key as ConfigKey))
       throw new Error(`Invalid config property: ${key}`)
 
     switch (key) {
@@ -104,7 +102,7 @@ export const onValidConfig = (obj: Record<string, any>) => {
         if (value)
           onValidateProperty(
             key,
-            COMMIT_TYPES.includes(value),
+            COMMIT_TYPE_MAP.includes(value),
             "Invalid commit type",
           )
 
@@ -138,15 +136,33 @@ export const onValidConfig = (obj: Record<string, any>) => {
 }
 
 export const getConfig = async () => {
-  const isExists = existsSync(CONFIG_PATH)
+  const isExists = existsSync(path.join(CONFIG_PATH, "config"))
 
   if (!isExists) return DEFAULT_CONFIG
 
-  const data = await readFile(CONFIG_PATH, "utf-8")
+  const data = await readFile(path.join(CONFIG_PATH, "config"), "utf-8")
 
   const config = JSON.parse(data) as Config
 
-  return { ...DEFAULT_CONFIG, ...pickObject(config, [...CONFIG_KEYS]) }
+  return { ...DEFAULT_CONFIG, ...pickObject(config, [...CONFIG_KEY_MAP]) }
+}
+
+const writeConfig = async (config: Config) => {
+  const data = JSON.stringify(config, null, 2)
+
+  try {
+    await writeFile(path.join(CONFIG_PATH, "config"), data, "utf-8")
+  } catch (e) {
+    if (e instanceof Error) {
+      if ("code" in e && e.code === "ENOENT") {
+        await mkdir(CONFIG_PATH, { recursive: true })
+
+        await writeFile(path.join(CONFIG_PATH, "config"), data, "utf-8")
+      } else {
+        throw new Error(e.message)
+      }
+    }
+  }
 }
 
 export const setConfig = async (nextConfig: Config) => {
@@ -154,9 +170,7 @@ export const setConfig = async (nextConfig: Config) => {
 
   const config = { ...prevConfig, ...nextConfig }
 
-  const data = JSON.stringify(config, null, 2)
-
-  await writeFile(CONFIG_PATH, data, "utf-8")
+  await writeConfig(config)
 
   return config
 }
@@ -169,9 +183,7 @@ export const resetConfig = async (keys: string[] = []) => {
     ...pickObject(DEFAULT_CONFIG, keys as ConfigKey[]),
   }
 
-  const data = JSON.stringify(config, null, 2)
-
-  await writeFile(CONFIG_PATH, data, "utf-8")
+  await writeConfig(config)
 
   return config
 }
