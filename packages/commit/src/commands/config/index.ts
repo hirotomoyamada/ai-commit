@@ -3,6 +3,7 @@ import {
   getConfig,
   onValidConfig,
   onValidConfigKeys,
+  resetConfig,
   setConfig,
 } from "../../utils/config"
 import { prompts } from "../../utils/prompts"
@@ -48,9 +49,6 @@ const set = async (parameters: string[]) => {
     const data = parameters.reduce<Record<string, any>>((prev, parameter) => {
       const [key, value] = parameter.split("=")
 
-      if (!key) throw new Error(`Invalid config key: ${key}`)
-      if (!value) throw new Error(`Invalid config value: ${value}`)
-
       prev[key] = value
 
       return prev
@@ -73,4 +71,31 @@ const set = async (parameters: string[]) => {
   })
 }
 
-export const config = { get, set }
+const reset = async () => {
+  await prompts(async (p) => {
+    const shouldContinue = await p.confirm({
+      message: "Are you sure you want to reset the configure?",
+    })
+
+    if (p.isCancel(shouldContinue) || !shouldContinue) {
+      p.done("Reset cancelled")
+
+      return
+    }
+
+    const config = await resetConfig()
+
+    const table = Object.entries(config).map(([key, value]) => ({
+      key: `${key}          `,
+      value: `${value}          `,
+    }))
+
+    const message = list.d(table).toString()
+
+    p.note(message, `Configure`)
+
+    p.complete(`Successfully updated`)
+  })
+}
+
+export const config = { get, set, reset }
