@@ -3,6 +3,7 @@ import packageJSON from "../package.json"
 import commitAction from "./commands/commit"
 import configAction from "./commands/config"
 import helpAction from "./commands/help"
+import promptAction from "./commands/prompt"
 // import hookAction from "./commands/hook"
 
 export const run = async () => {
@@ -43,6 +44,21 @@ export const run = async () => {
     .command("set [parameters...]")
     .description(`Set the configure`)
     .action(configAction.set)
+
+  const prompt = program.command("prompt")
+
+  prompt
+    .command("get", "", { isDefault: true })
+    .description(`Get the AI prompt`)
+    .action(promptAction.get)
+  prompt
+    .command("reset")
+    .description(`Reset the AI prompt`)
+    .action(promptAction.reset)
+  prompt
+    .command("set")
+    .description(`Set the AI prompt`)
+    .action(promptAction.set)
 
   program.on("-h, --help", helpAction)
 
