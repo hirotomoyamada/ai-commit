@@ -71,7 +71,7 @@ const set = async (parameters: string[]) => {
   })
 }
 
-const reset = async () => {
+const reset = async (keys: string[]) => {
   await prompts(async (p) => {
     const shouldContinue = await p.confirm({
       message: "Are you sure you want to reset the configure?",
@@ -83,7 +83,7 @@ const reset = async () => {
       return
     }
 
-    const config = await resetConfig()
+    const config = await resetConfig(keys)
 
     const table = Object.entries(config).map(([key, value]) => ({
       key: `${key}          `,

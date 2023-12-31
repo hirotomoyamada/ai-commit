@@ -161,8 +161,15 @@ export const setConfig = async (nextConfig: Config) => {
   return config
 }
 
-export const resetConfig = async () => {
-  const data = JSON.stringify(DEFAULT_CONFIG, null, 2)
+export const resetConfig = async (keys: string[] = []) => {
+  const prevConfig = await getConfig()
+
+  const config = {
+    ...prevConfig,
+    ...pickObject(DEFAULT_CONFIG, keys as ConfigKey[]),
+  }
+
+  const data = JSON.stringify(config, null, 2)
 
   await writeFile(CONFIG_PATH, data, "utf-8")
 
