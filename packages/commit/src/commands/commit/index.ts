@@ -69,62 +69,63 @@ const detectStagedFiles =
     }
   }
 
-const commitMessage =
-  (generate: string, diff: string) => async (p: Prompts, s: Spinner) => {
-    s.start("Analyzing your changes with the AI")
+const commitMessage = (diff: string) => async (p: Prompts, s: Spinner) => {
+  s.start("Analyzing your changes with the AI")
 
-    const messages = await generateCommitMessages({ ...config, diff, generate })
+  const messages = await generateCommitMessages({ ...config, diff })
 
-    let message: string
+  let message: string
 
-    if (!messages.length)
-      throw new Error("No commit messages were generated. Try again.")
+  if (!messages.length)
+    throw new Error("No commit messages were generated. Try again.")
 
-    s.stop("Analyzed your changes")
+  s.stop("Analyzed your changes")
 
-    if (messages.length === 1) {
-      message = messages[0]
+  if (messages.length === 1) {
+    message = messages[0]
 
-      p.note(message, "Commit message")
+    p.note(message, "Commit message")
 
-      const shouldContinue = await p.confirm({
-        message: `Use this commit message?`,
-      })
+    const shouldContinue = await p.confirm({
+      message: `Use this commit message?`,
+    })
 
-      if (p.isCancel(shouldContinue) || !shouldContinue) {
-        p.done("Reset cancelled")
+    if (p.isCancel(shouldContinue) || !shouldContinue) {
+      p.done("Reset cancelled")
 
-        return
-      }
-    } else {
-      const selectedMessage = await p.select<Option[], string>({
-        message: `Pick a commit message to use: ${c.dim("(Ctrl+c to exit)")}`,
-        options: messages.map((value) => ({ value })),
-      })
+      return
+    }
+  } else {
+    const selectedMessage = await p.select<Option[], string>({
+      message: `Pick a commit message to use: ${c.dim("(Ctrl+c to exit)")}`,
+      options: messages.map((value) => ({ value })),
+    })
 
-      if (p.isCancel(selectedMessage)) {
-        p.done("Commit cancelled")
+    if (p.isCancel(selectedMessage)) {
+      p.done("Commit cancelled")
 
-        return
-      }
-
-      message = selectedMessage
+      return
     }
 
-    await execa("git", ["commit", "-m", message])
-
-    p.complete("Successfully committed")
+    message = selectedMessage
   }
 
+  await execa("git", ["commit", "-m", message])
+
+  p.complete("Successfully committed")
+}
+
 type Options = {
-  generate: string
-  all: boolean
-  excludes: string[]
+  generate?: string
+  all?: boolean
+  type?: string
+  excludes?: string[]
 }
 
 const commit = async ({
-  generate = "1",
+  generate,
   all = false,
+  type,
   excludes = [],
 }: Options) => {
   await prompts(async (p, s) => {
@@ -136,9 +137,12 @@ const commit = async ({
       "Please set your OpenAI API key via `ai-commit config set apiKey=<your token>`",
     )
 
+    if (generate) config.generate = generate
+    if (type) config.type = type
+
     const diff = await detectStagedFiles(all, excludes)(p, s)
 
-    if (diff) await commitMessage(generate, diff)(p, s)
+    if (diff) await commitMessage(diff)(p, s)
   })
 }
 
