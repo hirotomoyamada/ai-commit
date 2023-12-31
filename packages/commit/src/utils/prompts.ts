@@ -29,8 +29,6 @@ export const prompts = async (
 
     await callback({ ...p, ...commands }, s)
   } catch (e) {
-    console.log(e)
-
     s.stop(`An error occurred`, 500)
 
     p.cancel(c.red(e instanceof Error ? e.message : "Message is missing"))
