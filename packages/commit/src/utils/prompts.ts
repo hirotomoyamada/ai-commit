@@ -1,7 +1,7 @@
 import * as p from "@clack/prompts"
 import c from "chalk"
 
-export type PromptOptions = { label: string; value: string }[]
+export type Option = { value: string; label?: string; hint?: string }
 
 type CustomCommands = {
   done: (message: string) => void
