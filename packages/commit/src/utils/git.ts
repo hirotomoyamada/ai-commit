@@ -40,7 +40,7 @@ export const getStagedFiles = async (excludeFiles: string[] = []) => {
   return { files, diff }
 }
 
-export const getUnstagedFiles = async (excludeFiles: string[] = []) => {
+export const getNotStagedFiles = async (excludeFiles: string[] = []) => {
   const { stdout } = await execa(
     "git",
     getDiffCommands(["--name-only"], excludeFiles),
