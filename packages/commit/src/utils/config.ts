@@ -105,7 +105,7 @@ export const onValidConfig = (obj: Record<string, any>) => {
           onValidateProperty(
             key,
             COMMIT_TYPES.includes(value),
-            "Cannot be empty",
+            "Invalid commit type",
           )
 
         break
