@@ -73,6 +73,8 @@ const set = async (parameters: string[]) => {
 
 const reset = async (keys: string[]) => {
   await prompts(async (p) => {
+    onValidConfigKeys(keys)
+
     const shouldContinue = await p.confirm({
       message: "Are you sure you want to reset the configure?",
     })

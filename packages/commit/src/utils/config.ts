@@ -173,5 +173,5 @@ export const resetConfig = async (keys: string[] = []) => {
 
   await writeFile(CONFIG_PATH, data, "utf-8")
 
-  return DEFAULT_CONFIG
+  return config
 }
