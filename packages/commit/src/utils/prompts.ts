@@ -21,6 +21,7 @@ export const prompts = async (
   p.intro(c.green(`AI Commit`))
 
   let isLoading = false
+
   const s = p.spinner()
 
   try {
