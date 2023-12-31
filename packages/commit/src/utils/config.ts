@@ -2,15 +2,16 @@ import { existsSync } from "fs"
 import { readFile, writeFile } from "fs/promises"
 import os from "os"
 import path from "path"
+import { pickObject } from "./object"
 
 export const CONFIG_KEYS = [
-  "OPENAI_KEY",
+  "apiKey",
   "generate",
   "locale",
   "timeout",
   "type",
   "model",
-  "max-length",
+  "maxLength",
 ] as const
 
 export type Config = {
@@ -20,13 +21,13 @@ export type Config = {
 export const CONFIG_PATH = path.join(os.homedir(), ".aicommit")
 
 export const DEFAULT_CONFIG: Config = {
-  OPENAI_KEY: undefined,
+  apiKey: undefined,
   generate: "1",
   locale: "en",
   timeout: "10000",
   type: undefined,
   model: "gpt-4",
-  "max-length": "50",
+  maxLength: "50",
 }
 
 export const onValidConfigKeys = (keys: string[]) => {
@@ -54,7 +55,7 @@ export const getConfig = async () => {
 
   const config = JSON.parse(data) as Config
 
-  return { ...DEFAULT_CONFIG, ...config }
+  return { ...DEFAULT_CONFIG, ...pickObject(config, [...CONFIG_KEYS]) }
 }
 
 export const setConfig = async (nextConfig: Config) => {
