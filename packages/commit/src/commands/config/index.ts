@@ -36,6 +36,8 @@ const get = async (keys: string[]) => {
     const message = list.d(table).toString()
 
     p.note(message, `Configure`)
+
+    p.complete("Done")
   })
 }
 
@@ -66,6 +68,8 @@ const set = async (parameters: string[]) => {
     const message = list.d(table).toString()
 
     p.note(message, `Configure`)
+
+    p.complete(`Successfully updated`)
   })
 }
 
