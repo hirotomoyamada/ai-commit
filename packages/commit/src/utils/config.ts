@@ -58,7 +58,7 @@ export const onValidConfig = (obj: Record<string, any>) => {
         onValidateProperty(
           key,
           value.startsWith("sk-"),
-          'Must start with "sk-"',
+          "Must start with `sk-`",
         )
 
         break
