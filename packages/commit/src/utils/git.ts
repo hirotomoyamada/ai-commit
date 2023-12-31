@@ -4,15 +4,15 @@ const EXCLUDE_FILES = ["package-lock.json", "pnpm-lock.yaml", "*.lock"]
 
 const transformExclude = (path: string) => `:(exclude)${path}`
 
-const getDiffCommands = (
-  options: string[] = [],
-  excludeFiles: string[] = [],
-) => [
-  "diff",
-  ...options,
+const getExcludeFileCommands = (excludeFiles: string[] = []) => [
   ...EXCLUDE_FILES.map(transformExclude),
   ...excludeFiles.map(transformExclude),
 ]
+
+const getDiffCommands = (
+  options: string[] = [],
+  excludeFiles: string[] = [],
+) => ["diff", ...options, ...getExcludeFileCommands(excludeFiles)]
 
 export const getDiff = async (excludeFiles: string[] = []) => {
   const commands = getDiffCommands(
@@ -40,11 +40,24 @@ export const getStagedFiles = async (excludeFiles: string[] = []) => {
   return { files, diff }
 }
 
-export const getWorkedFiles = async (excludeFiles: string[] = []) => {
+export const getUnstagedFiles = async (excludeFiles: string[] = []) => {
   const { stdout } = await execa(
     "git",
     getDiffCommands(["--name-only"], excludeFiles),
   )
+
+  if (!stdout) return []
+
+  return stdout.split("\n")
+}
+
+export const getUntrackedFiles = async (excludeFiles: string[] = []) => {
+  const { stdout } = await execa("git", [
+    "ls-files",
+    "--others",
+    "--exclude-standard",
+    ...getExcludeFileCommands(excludeFiles),
+  ])
 
   if (!stdout) return []
 
