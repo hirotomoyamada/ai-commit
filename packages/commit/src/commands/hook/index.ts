@@ -2,4 +2,4 @@ const install = () => {}
 
 const uninstall = () => {}
 
-export const hook = { install, uninstall }
+export default { install, uninstall }

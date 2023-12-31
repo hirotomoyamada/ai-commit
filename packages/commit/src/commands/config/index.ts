@@ -98,4 +98,4 @@ const reset = async () => {
   })
 }
 
-export const config = { get, set, reset }
+export default { get, set, reset }

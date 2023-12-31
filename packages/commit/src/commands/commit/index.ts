@@ -122,7 +122,7 @@ type Options = {
   excludes: string[]
 }
 
-export const commit = async ({
+const commit = async ({
   generate = "1",
   all = false,
   excludes = [],
@@ -141,3 +141,5 @@ export const commit = async ({
     if (diff) await commitMessage(generate, diff)(p, s)
   })
 }
+
+export default commit
