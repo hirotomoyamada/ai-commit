@@ -13,8 +13,8 @@ const generatePrompt = (
   const replacements: Record<string, string> = {
     locale,
     maxLength,
-    commit_type: COMMIT_TYPES[type as CommitType],
-    commit_rule: COMMIT_RULES[type as CommitType] ?? "<commit message>",
+    commitType: COMMIT_TYPES[type as CommitType],
+    commitRule: COMMIT_RULES[type as CommitType] ?? "<commit message>",
   }
 
   return prompt.replace(/{{\s*(\w+)\s*}}/g, (_, key) => replacements[key] || "")
