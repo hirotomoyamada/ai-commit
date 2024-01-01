@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["@types", "**/*.js", "**/*.ts", "bin/index.mjs"],
+  "include": ["@types", "**/*.js", "**/*.ts"],
   "exclude": ["**/node_modules"],
   "ts-node": {
     "transpileOnly": true,
