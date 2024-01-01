@@ -4,9 +4,12 @@ import commitAction from "./commands/commit"
 import configAction from "./commands/config"
 import helpAction from "./commands/help"
 import promptAction from "./commands/prompt"
+import { initCLI } from "./utils/cli"
 // import hookAction from "./commands/hook"
 
 export const run = async () => {
+  await initCLI()
+
   program.version(packageJSON.version, "-v, --version")
 
   program
