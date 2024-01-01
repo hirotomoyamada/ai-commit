@@ -1,5 +1,11 @@
 # @hirotomoyamada/ai-commit
 
+## 1.0.3
+
+### Patch Changes
+
+- [`ac23a6f`](https://github.com/hirotomoyamada/ai-commit/commit/ac23a6f0fbfd1e633a26a51a11afe634ea8183aa) Thanks [@hirotomoyamada](https://github.com/hirotomoyamada)! - Updated package name in readmes.
+
 ## 1.0.2
 
 ### Patch Changes
