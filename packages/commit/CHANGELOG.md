@@ -1,5 +1,11 @@
 # @hirotomoyamada/ai-commit
 
+## 1.0.4
+
+### Patch Changes
+
+- [`f058fcd`](https://github.com/hirotomoyamada/ai-commit/commit/f058fcdd7aae6b68b236245427d93a1059c4001f) Thanks [@hirotomoyamada](https://github.com/hirotomoyamada)! - Changed config directory name.
+
 ## 1.0.3
 
 ### Patch Changes
