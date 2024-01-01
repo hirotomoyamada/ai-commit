@@ -1,44 +1,74 @@
 {
-  "name": "ai-commit",
-  "version": "1.0.0",
-  "private": true,
-  "engines": {
-    "node": "18"
-  },
+  "name": "@hirotomoyamada/ai-commit",
+  "description": "AI generates git commit messages on your behalf.",
+  "version": "1.0.4",
+  "keywords": [
+    "ai",
+    "git",
+    "openai",
+    "chat-gpt",
+    "cli",
+    "commit",
+    "ai-commit"
+  ],
+  "author": "Hirotomo Yamada <hirotomo.yamada@avap.co.jp>",
   "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hirotomoyamada/ai-commmit"
+    "url": "git+https://github.com/hirotomoyamada/ai-commit",
+    "directory": "packages/ai-commit"
+  },
+  "bugs": {
+    "url": "https://github.com/hirotomoyamada/ai-commit/issues"
+  },
+  "bin": {
+    "ai-commit": "bin/index.js",
+    "aic": "bin/index.js"
   },
   "scripts": {
     "prepare": "husky install",
-    "prebuild": "",
-    "build": "turbo run build",
-    "lint": "eslint packages/**/src scripts/**/** --ext .ts --max-warnings 0 --config .eslintrc --cache",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore",
+    "build": "tsup src --format cjs --clean --shims",
+    "lint": "eslint src/**/*  --ext .ts --max-warnings 0 --config .eslintrc --cache",
     "format": "prettier --write .",
-    "format:check": "prettier --check packages/**/src scripts/**/** --cache",
-    "format:write": "prettier --write packages/**/src scripts/**/** --cache",
+    "format:check": "prettier --check src/**/*  --cache",
+    "format:write": "prettier --write src/**/*  --cache",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "quality": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
-    "changelog": "tsx scripts/changelog",
-    "changelog:latest": "tsx scripts/changelog --latest",
     "version:dev": "changeset version --snapshot dev",
     "version:next": "changeset version --snapshot next",
     "release": "changeset publish",
     "release:dev": "changeset publish --tag dev",
     "release:next": "changeset publish --tag next",
-    "clean": "pnpm -r --parallel exec rimraf dist *.log"
+    "clean": "rimraf dist"
   },
   "dependencies": {
-    "execa": "^8.0.1",
+    "@clack/prompts": "^0.7.0",
+    "commander": "^11.1.0",
+    "list-it": "^1.3.12",
+    "openai": "^4.24.1",
+    "execa": "^8.0.1"
+  },
+  "devDependencies": {
+    "update-notifier": "^7.0.0",
+    "@types/update-notifier": "^6.0.8",
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.1",
     "@changesets/types": "^6.0.0",
     "@clack/prompts": "^0.7.0",
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
-    "@hirotomoyamada/ai-commit": "workspace:*",
     "@octokit/rest": "^20.0.2",
     "@types/jest": "^29.5.11",
     "@types/node": "^20.10.6",
@@ -61,7 +91,7 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
-    "turbo": "^1.11.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "clean-package": "2.2.0"
   }
 }
