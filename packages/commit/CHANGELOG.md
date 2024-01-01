@@ -1,5 +1,11 @@
 # @hirotomoyamada/ai-commit
 
+## 1.0.2
+
+### Patch Changes
+
+- [`35f86d6`](https://github.com/hirotomoyamada/ai-commit/commit/35f86d6a8e09a41745e3bc68075727f9b434264f) Thanks [@hirotomoyamada](https://github.com/hirotomoyamada)! - Standardized template variable names.
+
 ## 1.0.1
 
 ### Patch Changes
