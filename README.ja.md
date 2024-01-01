@@ -50,7 +50,7 @@ ai-commit --version
 [最新バージョン](https://github.com/hirotomoyamada/ai-commit/releases)をインストールするには、次のように実行します。
 
 ```sh
-pnpm up -g aicommit --latest
+pnpm up -g @hirotomoyamada/ai-commit --latest
 ```
 
 ## 使い方
