@@ -1,5 +1,11 @@
 # @hirotomoyamada/ai-commit
 
+## 1.0.5
+
+### Patch Changes
+
+- [`b737179`](https://github.com/hirotomoyamada/ai-commit/commit/b737179711f1a952dd7906b364aa4c4482151df4) Thanks [@hirotomoyamada](https://github.com/hirotomoyamada)! - Migrated to ESM and added CLI utils.
+
 ## 1.0.4
 
 ### Patch Changes
