@@ -1,7 +1,7 @@
 {
   "name": "@hirotomoyamada/ai-commit",
   "description": "AI generates git commit messages on your behalf.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "keywords": [
     "ai",
     "git",
