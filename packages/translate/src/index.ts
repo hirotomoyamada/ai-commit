@@ -1,3 +1,0 @@
-const main = async () => {}
-
-main()
