@@ -8,7 +8,7 @@ export type CommitType = (typeof COMMIT_TYPE_MAP)[number]
 export type ConfigKey = (typeof CONFIG_KEY_MAP)[number]
 export type Config = { [key in ConfigKey]?: string }
 
-export const CONFIG_PATH = path.join(os.homedir(), ".aicommit")
+export const CONFIG_PATH = path.join(os.homedir(), ".ai-commit")
 export const COMMIT_TYPE_MAP = ["conventional"] as const
 export const CONFIG_KEY_MAP = [
   "apiKey",
