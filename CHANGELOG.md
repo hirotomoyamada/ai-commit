@@ -1,5 +1,13 @@
 # @hirotomoyamada/ai-commit
 
+## 1.0.6
+
+### Patch Changes
+
+- [`df7e1d9`](https://github.com/hirotomoyamada/ai-commit/commit/df7e1d9be8395a3bf181ff64ce0bfa93000100bb) Thanks [@hirotomoyamada](https://github.com/hirotomoyamada)! - Updated dependencies.
+
+- [`fade079`](https://github.com/hirotomoyamada/ai-commit/commit/fade0794a5690db5a0c335894e2bbceafcd9a2cf) Thanks [@hirotomoyamada](https://github.com/hirotomoyamada)! - Fixed a bug where files such as `package-lock.json` were not displayed.
+
 ## 1.0.5
 
 ### Patch Changes
