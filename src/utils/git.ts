@@ -4,21 +4,26 @@ const EXCLUDE_FILES = ["package-lock.json", "pnpm-lock.yaml", "*.lock"]
 
 const transformExclude = (path: string) => `:(exclude)${path}`
 
-const getExcludeFileCommands = (excludeFiles: string[] = []) => [
-  ...EXCLUDE_FILES.map(transformExclude),
-  ...excludeFiles.map(transformExclude),
-]
+const getExcludeFileCommands =
+  (excludeFiles: string[] = []) =>
+  (includes: boolean = true) => [
+    ...(includes ? EXCLUDE_FILES.map(transformExclude) : []),
+    ...excludeFiles.map(transformExclude),
+  ]
 
-const getDiffCommands = (
-  options: string[] = [],
-  excludeFiles: string[] = [],
-) => ["diff", ...options, ...getExcludeFileCommands(excludeFiles)]
+const getDiffCommands =
+  (options: string[] = [], excludeFiles: string[] = []) =>
+  (includes: boolean = true) => [
+    "diff",
+    ...options,
+    ...getExcludeFileCommands(excludeFiles)(includes),
+  ]
 
 export const getDiff = async (excludeFiles: string[] = []) => {
   const commands = getDiffCommands(
     ["--cached", "--diff-algorithm=minimal"],
     excludeFiles,
-  )
+  )(true)
 
   const { stdout } = await execa("git", commands)
 
@@ -28,7 +33,7 @@ export const getDiff = async (excludeFiles: string[] = []) => {
 export const getStagedFiles = async (excludeFiles: string[] = []) => {
   const { stdout } = await execa(
     "git",
-    getDiffCommands(["--cached", "--name-only"], excludeFiles),
+    getDiffCommands(["--cached", "--name-only"], excludeFiles)(false),
   )
 
   if (!stdout) return {}
@@ -43,7 +48,7 @@ export const getStagedFiles = async (excludeFiles: string[] = []) => {
 export const getNotStagedFiles = async (excludeFiles: string[] = []) => {
   const { stdout } = await execa(
     "git",
-    getDiffCommands(["--name-only"], excludeFiles),
+    getDiffCommands(["--name-only"], excludeFiles)(false),
   )
 
   if (!stdout) return []
@@ -56,7 +61,7 @@ export const getUntrackedFiles = async (excludeFiles: string[] = []) => {
     "ls-files",
     "--others",
     "--exclude-standard",
-    ...getExcludeFileCommands(excludeFiles),
+    ...getExcludeFileCommands(excludeFiles)(false),
   ])
 
   if (!stdout) return []

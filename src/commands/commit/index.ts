@@ -22,9 +22,9 @@ const detectStagedFiles =
 
     const { files, diff } = await getStagedFiles(excludeFiles)
 
-    s.stop("Detected the staged files")
-
     if (files?.length) {
+      s.stop("Detected the staged files")
+
       const count = files.length.toString()
       const list = files.join("\n")
 
@@ -32,12 +32,12 @@ const detectStagedFiles =
 
       return diff
     } else {
-      s.start("Detecting the worked files")
+      s.message("Detecting the worked files")
 
       const notStagedFiles = await getNotStagedFiles(excludeFiles)
       const untrackedFiles = await getUntrackedFiles(excludeFiles)
 
-      s.stop("Detecting the worked files")
+      s.stop("Detected the worked files")
 
       if (!notStagedFiles.length && !untrackedFiles.length) {
         p.done("No worked files found")
