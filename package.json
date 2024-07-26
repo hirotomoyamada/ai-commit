@@ -24,8 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hirotomoyamada/ai-commit",
-    "directory": "packages/ai-commit"
+    "url": "git+https://github.com/hirotomoyamada/ai-commit"
   },
   "bugs": {
     "url": "https://github.com/hirotomoyamada/ai-commit/issues"
